@@ -8,9 +8,16 @@ use Illuminate\Http\JsonResponse;
 
 class PokemonController extends Controller
 {
-public function index(): JsonResponse
+public function index(Request $request): JsonResponse
 {
-    $url = 'https://pokeapi.co/api/v2/pokemon?limit=10';
+    $page = (int) $request->get('page', 1);
+    $limit = (int) $request->get('limit', 10);
+    
+    $offset = ($page - 1) * $limit;
+    
+    $page = max(1, $page); 
+    $limit = min(max(1, $limit), 50);
+    $url = "https://pokeapi.co/api/v2/pokemon?offset={$offset}&limit={$limit}";
 
     $pokemon = [];
     $response = file_get_contents($url);
@@ -42,10 +49,7 @@ public function index(): JsonResponse
                     'height' => null,
                     'weight' => null,
                     'types' => ['Unknown'],
-                    'abilities' => [],
-                    'stats' => [],
-                    'sprite' => null,
-                    'url' => $item['url']
+                    'image' => null,
                 ];
             }
         }
@@ -54,7 +58,7 @@ public function index(): JsonResponse
     return response()->json([
         'success' => true,
         'data' => $pokemon,
-        'total' => count($pokemon)
+        'total' => $data['count'] ?? 0
     ]);
 }
 
@@ -76,9 +80,7 @@ public function index(): JsonResponse
         ], 201);
     }
 
-    /**
-     * Display the specified pokemon
-     */
+
     public function show(string $id): JsonResponse
     {
         // Fetch individual Pokemon data from PokeAPI
@@ -119,9 +121,6 @@ public function index(): JsonResponse
         ]);
     }
 
-    /**
-     * Update the specified pokemon
-     */
     public function update(Request $request, string $id): JsonResponse
     {
         $validated = $request->validate([
@@ -138,9 +137,6 @@ public function index(): JsonResponse
         ]);
     }
 
-    /**
-     * Remove the specified pokemon
-     */
     public function destroy(string $id): JsonResponse
     {
         // In a real app, you'd delete from database here

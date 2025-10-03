@@ -1,20 +1,25 @@
 "use client";
 import React from "react";
-import { Carousel, Image, Row, Col, Button } from "antd";
+import { Carousel, Image, Row, Col, Button, Pagination, Spin } from "antd";
 import { fetchPokemonData } from "../../api/PokemonData";
 import { Pokemon } from "../../types/PokeTypes";
 
 export default function Home() {
   const [pokemonData, setPokemonData] = React.useState<Pokemon[]>([]);
+  const [total, setTotal] = React.useState<number>(0);
+  const [loading, setLoading] = React.useState<boolean>(false);
 
   React.useEffect(() => {
-    const fetchData = async () => {
-      const data = await fetchPokemonData();
-      setPokemonData(data);
-    };
-
-    fetchData();
+    fetchData(1);
   }, []);
+
+  const fetchData = async (page : number) => {
+    setLoading(true);
+    const data = await fetchPokemonData(page);
+    setPokemonData(data.Pokemon);
+    setTotal(data.Total);
+    setLoading(false);
+  };
 
   function buildCarouselItems() {
     return (
@@ -30,6 +35,10 @@ export default function Home() {
         </div>
       </Carousel>
     );
+  }
+
+  function handlePageChange(page: number) {
+    fetchData(page);
   }
 
   function buildStaticBanner(src: string, alt: string) {
@@ -59,15 +68,16 @@ export default function Home() {
           />
         </Col>
         <Col span={3} style={{ paddingLeft: "10px", textAlign: "left" }}>
-          <Button type="primary">
-            Search
-          </Button>
+          <Button type="primary">Search</Button>
         </Col>
       </Row>
     );
   }
 
   function buildPokemonCard() {
+    if (loading) {
+      return <Spin size="large" style={{ margin: "20px" }} />;
+    }
     return (
       <Row gutter={[16, 16]} justify="start">
         {pokemonData.map((pokemon) => (
@@ -81,25 +91,35 @@ export default function Home() {
               }}
             >
               <Row>
-              <Col span={10}>
-                <Image
-                  src={pokemon.image}
-                  alt={pokemon.name}
-                  width="80px"
-                  height="100px"
-                />
-              </Col>
-              <Col span={13} style={{ textAlign: "left", alignContent: "center"}}>
-                <h3>{pokemon.name}</h3>
-                <Row gutter={[4, 4]} style={{ marginTop: "5px"}}>
-                
-                {pokemon.type.map((type) => (
-                  <Col key={type} style={{ marginRight: "5px", border: "1px solid #e8e8e8", backgroundColor: "#f0f0f0", borderRadius: "4px" }}>
-                    <p>{type}</p>
-                  </Col>
-                ))}
-                </Row>
-              </Col>
+                <Col span={10}>
+                  <Image
+                    src={pokemon.image}
+                    alt={pokemon.name}
+                    width="80px"
+                    height="100px"
+                  />
+                </Col>
+                <Col
+                  span={13}
+                  style={{ textAlign: "left", alignContent: "center" }}
+                >
+                  <h3>{pokemon.name}</h3>
+                  <Row gutter={[4, 4]} style={{ marginTop: "5px" }}>
+                    {pokemon.type.map((type) => (
+                      <Col
+                        key={type}
+                        style={{
+                          marginRight: "5px",
+                          border: "1px solid #e8e8e8",
+                          backgroundColor: "#f0f0f0",
+                          borderRadius: "4px",
+                        }}
+                      >
+                        <p>{type}</p>
+                      </Col>
+                    ))}
+                  </Row>
+                </Col>
               </Row>
             </div>
           </Col>
@@ -109,6 +129,7 @@ export default function Home() {
   }
 
   console.log("pokemonData:", pokemonData);
+  // console.log("Page total:", page.current);
 
   return (
     <>
@@ -134,12 +155,22 @@ export default function Home() {
           <Col lg={3} md={12} sm={24}>
             {buildStaticImages("/assets/images/image1.png", "Static Image 1")}
           </Col>
-          <Col lg={13} md={12} sm={24}  style={{ textAlign: "center",  }}>
+          <Col lg={13} md={12} sm={24} style={{ textAlign: "center" }}>
             <Row>
               <Col span={24}>{buildSearchBar()}</Col>
             </Row>
             <Row>
-              <Col span={24}>{buildPokemonCard()}</Col>
+              <Col span={24}>
+                {buildPokemonCard()}
+                <Pagination
+                  align="center"
+                  defaultCurrent={1}
+                  pageSize={12}
+                  total={total}
+                  onChange={handlePageChange}
+                  showSizeChanger={false}
+                />
+              </Col>
             </Row>
           </Col>
           <Col lg={7} md={12} sm={24} style={{ textAlign: "center" }}>
