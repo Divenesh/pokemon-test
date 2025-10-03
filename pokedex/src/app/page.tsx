@@ -25,13 +25,13 @@ export default function Home() {
     return (
       <Carousel autoplay>
         <div>
-          <Image src="/assets/carousel/carousal1.jpg" alt="Image 1" />
+          <Image src="/assets/carousel/carousel1.webp" alt="Image 1" />
         </div>
         <div>
-          <Image src="/assets/carousel/carousal2.jpg" alt="Image 2" />
+          <Image src="/assets/carousel/carousel2.webp" alt="Image 2" />
         </div>
         <div>
-          <Image src="/assets/carousel/carousal3.jpg" alt="Image 3" />
+          <Image src="/assets/carousel/carousel3.webp" alt="Image 3" />
         </div>
       </Carousel>
     );
@@ -51,8 +51,8 @@ export default function Home() {
 
   function buildStaticImages(src: string, alt: string) {
     return (
-      <div>
-        <Image src={src} alt={alt} />
+      <div >
+        <Image preview={false} src={src} alt={alt} />
       </div>
     );
   }
@@ -68,7 +68,7 @@ export default function Home() {
           />
         </Col>
         <Col span={3} style={{ paddingLeft: "10px", textAlign: "left" }}>
-          <Button type="primary">Search</Button>
+          <Button style={{ width: "100%", backgroundColor: "#ff8c00ff", color: "#fff" }}>Search</Button>
         </Col>
       </Row>
     );
@@ -81,7 +81,7 @@ export default function Home() {
     return (
       <Row gutter={[16, 16]} justify="start">
         {pokemonData.map((pokemon) => (
-          <Col key={pokemon.name} xs={24} sm={12} md={8} lg={8} xl={4}>
+          <Col key={pokemon.name} xs={24} sm={12} md={8} lg={8} xl={8}>
             <div
               style={{
                 border: "1px solid #e8e8e8",
@@ -97,6 +97,7 @@ export default function Home() {
                     alt={pokemon.name}
                     width="80px"
                     height="100px"
+                    preview={false}
                   />
                 </Col>
                 <Col
@@ -128,22 +129,19 @@ export default function Home() {
     );
   }
 
-  console.log("pokemonData:", pokemonData);
-  // console.log("Page total:", page.current);
-
   return (
     <>
       <div style={{ margin: "20px" }}>
-        <Row justify="center" align="middle" style={{ minHeight: "10vh" }}>
-          <Col lg={16} style={{ textAlign: "center" }}>
+        <Row justify="center" align="top" style={{ minHeight: "6vh"}}>
+          <Col lg={18} style={{ textAlign: "center", overflow: "hidden", maxHeight: "390px" }}>
             <div>{buildCarouselItems()}</div>
           </Col>
-          <Col lg={7} style={{ margin: "20px" }}>
-            <div style={{ marginBottom: "20px" }}>
-              {buildStaticBanner("/assets/banner/banner1.jpg", "Banner 1")}
+          <Col lg={5} style={{ marginLeft: "20px" }}>
+            <div style={{ marginBottom: "20px", maxHeight: "190px" }}>
+              {buildStaticBanner("/assets/banner/banner1.webp", "Banner 1")}
             </div>
-            <div>
-              {buildStaticBanner("/assets/banner/banner2.jpg", "Banner 2")}
+            <div style={{ maxHeight: "190px" , overflow: "hidden"}}>
+              {buildStaticBanner("/assets/banner/banner2.webp", "Banner 2")}
             </div>
           </Col>
         </Row>
@@ -152,8 +150,8 @@ export default function Home() {
           align="top"
           style={{ minHeight: "10vh", marginTop: "40px" }}
         >
-          <Col lg={3} md={12} sm={24}>
-            {buildStaticImages("/assets/images/image1.png", "Static Image 1")}
+          <Col lg={4} md={12} sm={24} style={{ textAlign: "center" }}>
+            {buildStaticImages("/assets/images/image1.webp", "Static Image 1")}
           </Col>
           <Col lg={13} md={12} sm={24} style={{ textAlign: "center" }}>
             <Row>
@@ -169,12 +167,13 @@ export default function Home() {
                   total={total}
                   onChange={handlePageChange}
                   showSizeChanger={false}
+                  style={{ marginTop: "20px", textAlign: "center" }}
                 />
               </Col>
             </Row>
           </Col>
-          <Col lg={7} md={12} sm={24} style={{ textAlign: "center" }}>
-            {buildStaticImages("/assets/images/image2.png", "Static Image 2")}
+          <Col lg={5} md={12} sm={24} style={{ textAlign: "center" }}>
+            {buildStaticImages("/assets/images/image2.webp", "Static Image 2")}
           </Col>
         </Row>
       </div>
