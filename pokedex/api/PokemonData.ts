@@ -4,7 +4,7 @@ import { API_BASE_URL } from "../config";
 
 
 const fetchPokemonData = async (page: number): Promise<{Pokemon: Pokemon[], Total: number}> => {
-    const response = await fetch(`${API_BASE_URL}?page=${page}&limit=12`);
+    const response = await fetch(`${API_BASE_URL}?page=${page}&limit=60`);
     const data = await response.json();
     console.log("Fetched Pokemon:", data);
     const pokemon = data.data.map((item: any) => ({

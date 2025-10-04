@@ -16,7 +16,7 @@ class PokemonController extends Controller
         
         $offset = ($page - 1) * $limit;
         $page = max(1, $page); 
-        $limit = min(max(1, $limit), 20);
+        $limit = min(max(1, $limit), 100);
         $baseUrl = config('services.pokeapi.base_url');
         $url = "{$baseUrl}?offset={$offset}&limit={$limit}";
 

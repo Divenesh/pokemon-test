@@ -1,24 +1,24 @@
 "use client";
 import React from "react";
-import {Carousel, Image, Row, Col, Button, Pagination, Spin, Input,} from "antd";
+import {Carousel, Image, Row, Col, Button, Spin, Input,} from "antd";
 import { fetchPokemonData, searchPokemon } from "../../api/PokemonData";
 import { Pokemon } from "../../types/PokeTypes";
 
 export default function Home() {
   const [pokemonData, setPokemonData] = React.useState<Pokemon[]>([]);
-  const [total, setTotal] = React.useState<number>(0);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [searchValue, setSearchValue] = React.useState<string>("");
+  const nextPage = React.useRef<number>(1);
 
   React.useEffect(() => {
-    fetchData(1);
+    fetchData(nextPage.current);
   }, []);
 
   const fetchData = async (page: number) => {
     setLoading(true);
     const data = await fetchPokemonData(page);
-    setPokemonData(data.Pokemon);
-    setTotal(data.Total);
+    nextPage.current++;
+    setPokemonData((prevData) => [...prevData, ...data.Pokemon]);
     setLoading(false);
   };
 
@@ -36,10 +36,6 @@ export default function Home() {
         </div>
       </Carousel>
     );
-  }
-
-  function handlePageChange(page: number) {
-    fetchData(page);
   }
 
   function buildStaticBanner(src: string, alt: string) {
@@ -105,7 +101,9 @@ export default function Home() {
 
   function handleClear() {
     setSearchValue("");
-    fetchData(1);
+    setPokemonData([]);
+    nextPage.current = 1;
+    fetchData(nextPage.current);
   }
 
   function handleSearch(name: string) {
@@ -119,22 +117,14 @@ export default function Home() {
       const data = await searchPokemon(name);
 
       setPokemonData(data.Pokemon);
-      setTotal(1);
       setLoading(false);
     };
     fetchSearchData();
   }
 
   function buildPokemonCard() {
-    if (loading) {
-      return (
-        <div style={{ textAlign: 'center', padding: '40px' }}>
-          <Spin size="large" />
-        </div>
-      );
-    }
 
-    if (pokemonData) {
+    if (pokemonData && !loading) {
       if (pokemonData[0]?.name === undefined) {
         return (
           <div style={{ textAlign: 'center', padding: '40px' }}>
@@ -145,6 +135,7 @@ export default function Home() {
     }
 
     return (
+      <div style={{ width: "100%", scrollbarWidth: "none", maxHeight: "600px", overflowY: "auto", minHeight: "100px" }}>
       <Row gutter={[16, 16]} justify="start">
         {pokemonData.map((pokemon) => (
           <Col key={pokemon.name} xs={24} sm={12} md={12} lg={8}>
@@ -201,11 +192,20 @@ export default function Home() {
           </Col>
         ))}
       </Row>
+      <div style={{ textAlign: "center", marginTop: "20px" }}>
+        {loading && <Spin size="large" />}
+        {!loading && !searchValue && pokemonData.length > 0 && (
+          <Button onClick={() => fetchData(nextPage.current)} style={{ backgroundColor: "#ff8c00ff", color: "#fff", width: "80%" }}>
+            Load More
+          </Button>
+        )}      
+      </div>
+      </div>
     );
   }
 
   return (
-    <div style={{ padding: "20px", maxWidth: "1200px", margin: "0 auto" }}>
+    <div style={{ padding: "20px", maxWidth: "100%", margin: "0 auto" }}>
       <Row gutter={[20, 20]} align="top" style={{ marginBottom: "40px" }}>
         <Col lg={17} md={16} sm={24} xs={24}>
           <div style={{ 
@@ -248,20 +248,7 @@ export default function Home() {
             <div style={{ marginBottom: "20px", borderRadius: "8px", boxShadow: "0 2px 8px rgba(0,0,0,0.1)" , padding: "10px", backgroundColor: "#fff" }}>
               {buildPokemonCard()}
             </div>
-            
-            <div style={{ textAlign: "center" }}>
-              <Pagination
-                align="center"
-                defaultCurrent={1}
-                pageSize={12}
-                total={total}
-                onChange={handlePageChange}
-                showSizeChanger={false}
-                responsive
-                showQuickJumper
-                showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} items`}
-              />
-            </div>
+          
           </div>
         </Col>
         <Col lg={5} md={6} sm={24} xs={24}>
