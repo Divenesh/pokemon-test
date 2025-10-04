@@ -5,6 +5,7 @@ import {Pokemon} from "../types/PokeTypes";
 const fetchPokemonData = async (page: number): Promise<{Pokemon: Pokemon[], Total: number}> => {
     const response = await fetch(`http://localhost:8002/api/pokemon?page=${page}&limit=12`);
     const data = await response.json();
+    console.log("Fetched Pokemon:", data);
     const pokemon = data.data.map((item: any) => ({
         name: item.name,
         image: item.image,
@@ -18,4 +19,21 @@ const fetchPokemonData = async (page: number): Promise<{Pokemon: Pokemon[], Tota
 };
 
 
-export {fetchPokemonData};
+const searchPokemon = async (name: string): Promise<{Pokemon: Pokemon[]}> => {
+    const response = await fetch(`http://localhost:8002/api/pokemon/search?name=${name}`);
+    const data = await response.json();
+    console.log("Fetched Pokemon:", data);
+    const pokemon = {
+        name: data.data.name,
+        image: data.data.image,
+        type: data.data.types,
+        height: data.data.height,
+        weight: data.data.weight,
+    };
+
+    console.log("Mapped Pokemon:", pokemon);
+    return { Pokemon: [pokemon] };
+};
+
+
+export {fetchPokemonData, searchPokemon};

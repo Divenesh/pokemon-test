@@ -1,13 +1,14 @@
 "use client";
 import React from "react";
-import { Carousel, Image, Row, Col, Button, Pagination, Spin } from "antd";
-import { fetchPokemonData } from "../../api/PokemonData";
+import { Carousel, Image, Row, Col, Button, Pagination, Spin, Input } from "antd";
+import { fetchPokemonData, searchPokemon } from "../../api/PokemonData";
 import { Pokemon } from "../../types/PokeTypes";
 
 export default function Home() {
   const [pokemonData, setPokemonData] = React.useState<Pokemon[]>([]);
   const [total, setTotal] = React.useState<number>(0);
   const [loading, setLoading] = React.useState<boolean>(false);
+  const [searchValue, setSearchValue] = React.useState<string>("");
 
   React.useEffect(() => {
     fetchData(1);
@@ -61,17 +62,51 @@ export default function Home() {
     return (
       <Row justify="center" align="middle" style={{ marginBottom: "20px" }}>
         <Col span={21}>
-          <input
+          <Input
             style={{ width: "100%", height: "35px" }}
             type="text"
             placeholder="Pokemon Name ...."
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleSearch(searchValue);
+              }
+            }}
+            onClear={() => handleClear()}
+            allowClear
           />
         </Col>
         <Col span={3} style={{ paddingLeft: "10px", textAlign: "left" }}>
-          <Button style={{ width: "100%", backgroundColor: "#ff8c00ff", color: "#fff" }}>Search</Button>
+          <Button onClick={() => handleSearch(searchValue)} style={{ width: "100%", backgroundColor: "#ff8c00ff", color: "#fff" }}>Search</Button>
         </Col>
       </Row>
     );
+  }
+
+  function handleClear() {
+    setSearchValue("");
+    fetchData(1);
+  }
+
+  function handleSearch(name: string) {
+
+    if (name.trim() === "") {
+      fetchData(1);
+      return;
+    }
+
+    const fetchSearchData = async () => {
+      setLoading(true);
+      const data = await searchPokemon(name);
+
+
+      console.log("Data:", data.Pokemon);
+      setPokemonData(data.Pokemon);
+      setTotal(1);
+      setLoading(false);
+    };
+    fetchSearchData();
   }
 
   function buildPokemonCard() {
@@ -150,7 +185,7 @@ export default function Home() {
           align="top"
           style={{ minHeight: "10vh", marginTop: "40px" }}
         >
-          <Col lg={4} md={12} sm={24} style={{ textAlign: "center" }}>
+          <Col lg={5} md={12} sm={24} style={{ textAlign: "center" }}>
             {buildStaticImages("/assets/images/image1.webp", "Static Image 1")}
           </Col>
           <Col lg={13} md={12} sm={24} style={{ textAlign: "center" }}>
@@ -172,7 +207,7 @@ export default function Home() {
               </Col>
             </Row>
           </Col>
-          <Col lg={5} md={12} sm={24} style={{ textAlign: "center" }}>
+          <Col lg={5} md={12} sm={24} style={{ textAlign: "right" }}>
             {buildStaticImages("/assets/images/image2.webp", "Static Image 2")}
           </Col>
         </Row>
