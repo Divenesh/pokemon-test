@@ -1,6 +1,15 @@
 "use client";
 import React from "react";
-import { Carousel, Image, Row, Col, Button, Pagination, Spin, Input } from "antd";
+import {
+  Carousel,
+  Image,
+  Row,
+  Col,
+  Button,
+  Pagination,
+  Spin,
+  Input,
+} from "antd";
 import { fetchPokemonData, searchPokemon } from "../../api/PokemonData";
 import { Pokemon } from "../../types/PokeTypes";
 
@@ -14,7 +23,7 @@ export default function Home() {
     fetchData(1);
   }, []);
 
-  const fetchData = async (page : number) => {
+  const fetchData = async (page: number) => {
     setLoading(true);
     const data = await fetchPokemonData(page);
     setPokemonData(data.Pokemon);
@@ -52,7 +61,7 @@ export default function Home() {
 
   function buildStaticImages(src: string, alt: string) {
     return (
-      <div >
+      <div>
         <Image preview={false} src={src} alt={alt} />
       </div>
     );
@@ -78,7 +87,16 @@ export default function Home() {
           />
         </Col>
         <Col span={3} style={{ paddingLeft: "10px", textAlign: "left" }}>
-          <Button onClick={() => handleSearch(searchValue)} style={{ width: "100%", backgroundColor: "#ff8c00ff", color: "#fff" }}>Search</Button>
+          <Button
+            onClick={() => handleSearch(searchValue)}
+            style={{
+              width: "100%",
+              backgroundColor: "#ff8c00ff",
+              color: "#fff",
+            }}
+          >
+            Search
+          </Button>
         </Col>
       </Row>
     );
@@ -90,7 +108,6 @@ export default function Home() {
   }
 
   function handleSearch(name: string) {
-
     if (name.trim() === "") {
       fetchData(1);
       return;
@@ -100,8 +117,6 @@ export default function Home() {
       setLoading(true);
       const data = await searchPokemon(name);
 
-
-      console.log("Data:", data.Pokemon);
       setPokemonData(data.Pokemon);
       setTotal(1);
       setLoading(false);
@@ -113,6 +128,13 @@ export default function Home() {
     if (loading) {
       return <Spin size="large" style={{ margin: "20px" }} />;
     }
+
+    if (pokemonData) {
+      if (pokemonData[0]?.name === undefined) {
+        return <h2 style={{ margin: "20px" }}>No Pokemon Found</h2>;
+      }
+    }
+
     return (
       <Row gutter={[16, 16]} justify="start">
         {pokemonData.map((pokemon) => (
@@ -167,15 +189,22 @@ export default function Home() {
   return (
     <>
       <div style={{ margin: "20px" }}>
-        <Row justify="center" align="top" style={{ minHeight: "6vh"}}>
-          <Col lg={18} style={{ textAlign: "center", overflow: "hidden", maxHeight: "390px" }}>
+        <Row justify="center" align="top" style={{ minHeight: "6vh" }}>
+          <Col
+            lg={18}
+            style={{
+              textAlign: "center",
+              overflow: "hidden",
+              maxHeight: "390px",
+            }}
+          >
             <div>{buildCarouselItems()}</div>
           </Col>
           <Col lg={5} md={24} sm={24} style={{ marginLeft: "20px" }}>
             <div style={{ marginBottom: "20px", maxHeight: "190px" }}>
               {buildStaticBanner("/assets/banner/banner1.webp", "Banner 1")}
             </div>
-            <div style={{ maxHeight: "190px" , overflow: "hidden"}}>
+            <div style={{ maxHeight: "190px", overflow: "hidden" }}>
               {buildStaticBanner("/assets/banner/banner2.webp", "Banner 2")}
             </div>
           </Col>

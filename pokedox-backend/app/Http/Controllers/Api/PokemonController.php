@@ -74,17 +74,19 @@ public function index(Request $request): JsonResponse
         }
 
         $url = "https://pokeapi.co/api/v2/pokemon/{$query}";
-        $response = file_get_contents($url);
 
-        if (!$response) {
+        try {
+            $response = file_get_contents($url);
+        } catch (\Exception $e) {
+            error_log("Error fetching Pokemon data: " . $e->getMessage());
             return response()->json([
                 'success' => true,
                 'query' => $query,
                 'message' => 'No Pokemon found with that name',
                 'data' => []
             ]);
-        }
-
+        };
+        
         $data = json_decode($response, true);
         
         $pokemon = [
