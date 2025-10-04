@@ -116,7 +116,7 @@ export default function Home() {
     return (
       <Row gutter={[16, 16]} justify="start">
         {pokemonData.map((pokemon) => (
-          <Col key={pokemon.name} xs={24} sm={12} md={8} lg={8} xl={8}>
+          <Col key={pokemon.name} xs={24} sm={12} md={12} lg={8} xl={8}>
             <div
               style={{
                 border: "1px solid #e8e8e8",
@@ -171,7 +171,7 @@ export default function Home() {
           <Col lg={18} style={{ textAlign: "center", overflow: "hidden", maxHeight: "390px" }}>
             <div>{buildCarouselItems()}</div>
           </Col>
-          <Col lg={5} style={{ marginLeft: "20px" }}>
+          <Col lg={5} md={24} sm={24} style={{ marginLeft: "20px" }}>
             <div style={{ marginBottom: "20px", maxHeight: "190px" }}>
               {buildStaticBanner("/assets/banner/banner1.webp", "Banner 1")}
             </div>
@@ -185,10 +185,10 @@ export default function Home() {
           align="top"
           style={{ minHeight: "10vh", marginTop: "40px" }}
         >
-          <Col lg={5} md={12} sm={24} style={{ textAlign: "center" }}>
+          <Col lg={5} md={24} sm={24} style={{ textAlign: "center" }}>
             {buildStaticImages("/assets/images/image1.webp", "Static Image 1")}
           </Col>
-          <Col lg={13} md={12} sm={24} style={{ textAlign: "center" }}>
+          <Col lg={13} md={24} sm={24} style={{ textAlign: "center" }}>
             <Row>
               <Col span={24}>{buildSearchBar()}</Col>
             </Row>
@@ -207,7 +207,7 @@ export default function Home() {
               </Col>
             </Row>
           </Col>
-          <Col lg={5} md={12} sm={24} style={{ textAlign: "right" }}>
+          <Col lg={5} md={24} sm={24} style={{ textAlign: "right" }}>
             {buildStaticImages("/assets/images/image2.webp", "Static Image 2")}
           </Col>
         </Row>
