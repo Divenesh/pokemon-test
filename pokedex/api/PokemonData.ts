@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {Pokemon} from "../types/PokeTypes";
+import { API_BASE_URL } from "../config";
 
 
 const fetchPokemonData = async (page: number): Promise<{Pokemon: Pokemon[], Total: number}> => {
-    const response = await fetch(`http://localhost:8002/api/pokemon?page=${page}&limit=12`);
+    const response = await fetch(`${API_BASE_URL}?page=${page}&limit=12`);
     const data = await response.json();
     console.log("Fetched Pokemon:", data);
     const pokemon = data.data.map((item: any) => ({
@@ -20,7 +21,7 @@ const fetchPokemonData = async (page: number): Promise<{Pokemon: Pokemon[], Tota
 
 
 const searchPokemon = async (name: string): Promise<{Pokemon: Pokemon[]}> => {
-    const response = await fetch(`http://localhost:8002/api/pokemon/search?name=${name}`);
+    const response = await fetch(`${API_BASE_URL}/search?name=${name}`);
     const data = await response.json();
     console.log("Fetched Pokemon:", data);
     const pokemon = {
