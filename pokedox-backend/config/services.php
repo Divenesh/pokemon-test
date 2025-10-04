@@ -34,5 +34,9 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+        'pokeapi' => [
+        'base_url' => env('API_URL'),
+        'timeout' => env('POKEAPI_TIMEOUT', 10),
+    ],
 
 ];
