@@ -19,7 +19,6 @@ const fetchPokemonData = async (page: number): Promise<{Pokemon: Pokemon[], Tota
 
 };
 
-
 const searchPokemon = async (name: string): Promise<{Pokemon: Pokemon[]}> => {
     const response = await fetch(`${API_BASE_URL}/search?name=${name}`);
     const data = await response.json();

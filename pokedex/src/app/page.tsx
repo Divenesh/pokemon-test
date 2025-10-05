@@ -108,7 +108,7 @@ export default function Home() {
 
   function handleSearch(name: string) {
     if (name.trim() === "") {
-      fetchData(1);
+      handleClear();
       return;
     }
 
@@ -194,7 +194,7 @@ export default function Home() {
       </Row>
       <div style={{ textAlign: "center", marginTop: "20px" }}>
         {loading && <Spin size="large" />}
-        {!loading && !searchValue && pokemonData.length > 0 && (
+        {!loading && !searchValue && pokemonData.length > 1 && (
           <Button onClick={() => fetchData(nextPage.current)} style={{ backgroundColor: "#ff8c00ff", color: "#fff", width: "80%" }}>
             Load More
           </Button>
