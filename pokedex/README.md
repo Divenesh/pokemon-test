@@ -10,7 +10,6 @@ This section explains the technologies used, data fetching flow, key improvement
 1. ⚡ **Next.js** – React framework for fast and scalable frontend development
 2. 🎨 **Ant Design** – UI component library for a clean and modern design
 3. ✅ **ESLint** – Ensures enterprise-level coding standards
-4. 🧪 **Jest** – Unit testing framework for reliable debugging
 
 ---
 
@@ -50,7 +49,6 @@ We’ve implemented **two API functions** for fetching Pokémon data:
 
 * 📡 Data Fetching → `/pokedex/api/PokemonData.ts`
 * 🏠 Home Page → `/pokedex/src/app/page.tsx`
-* 🧪 Test Files → `/pokedex/tests`
 
 ---
 
@@ -60,23 +58,11 @@ We’ve implemented **two API functions** for fetching Pokémon data:
 2. 🔄 Infinite scroll pagination (better performance & smoother UX)
 3. 🖼️ Images compressed to **WebP** format for faster loading
 4. 🛡️ Added `try/catch` for error handling during API requests
-5. 🧪 Unit tests using **Jest** for easier debugging
-6. 🔑 All API URLs placed in `.env` file for security (`.env` is uploaded in github 🚀)
-7. 🎣 Proper usage of **React Hooks**
-8. 📝 Defined TypeScript interfaces for structured data
-9. 🧹 Clean and refactored codebase
+5. 🔑 All API URLs placed in `.env` file for security (`.env` is uploaded in github 🚀)
+6. 🎣 Proper usage of **React Hooks**
+7. 📝 Defined TypeScript interfaces for structured data
+8. 🧹 Clean and refactored codebase
 
----
-
-## 🧪 Testing
-
-Run the following command to execute tests:
-
-```bash
-npm test
-```
-
----
 
 ## ⚠️ Disclaimer
 
