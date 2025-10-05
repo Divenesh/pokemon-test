@@ -4,9 +4,9 @@ import { API_BASE_URL } from "../config";
 
 
 const fetchPokemonData = async (page: number): Promise<{Pokemon: Pokemon[], Total: number}> => {
+    
     const response = await fetch(`${API_BASE_URL}?page=${page}&limit=60`);
     const data = await response.json();
-    console.log("Fetched Pokemon:", data);
     const pokemon = data.data.map((item: any) => ({
         name: item.name,
         image: item.image,
@@ -22,7 +22,6 @@ const fetchPokemonData = async (page: number): Promise<{Pokemon: Pokemon[], Tota
 const searchPokemon = async (name: string): Promise<{Pokemon: Pokemon[]}> => {
     const response = await fetch(`${API_BASE_URL}/search?name=${name}`);
     const data = await response.json();
-    console.log("Fetched Pokemon:", data);
     const pokemon = {
         name: data.data.name,
         image: data.data.image,
@@ -31,7 +30,6 @@ const searchPokemon = async (name: string): Promise<{Pokemon: Pokemon[]}> => {
         weight: data.data.weight,
     };
 
-    console.log("Mapped Pokemon:", pokemon);
     return { Pokemon: [pokemon] };
 };
 

@@ -15,11 +15,16 @@ export default function Home() {
   }, []);
 
   const fetchData = async (page: number) => {
-    setLoading(true);
-    const data = await fetchPokemonData(page);
-    nextPage.current++;
-    setPokemonData((prevData) => [...prevData, ...data.Pokemon]);
-    setLoading(false);
+    try {
+      setLoading(true);
+      const data = await fetchPokemonData(page);
+      nextPage.current++;
+      setPokemonData((prevData) => [...prevData, ...data.Pokemon]);
+    } catch (error) {
+      console.error("Error fetching Pokémon data:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   function buildCarouselItems() {
@@ -99,11 +104,15 @@ export default function Home() {
     );
   }
 
-  function handleClear() {
+  async function handleClear() {
     setSearchValue("");
     setPokemonData([]);
     nextPage.current = 1;
-    fetchData(nextPage.current);
+    try {
+      await fetchData(nextPage.current);
+    } catch (error) {
+      console.error("Error fetching Pokémon data:", error);
+    }
   }
 
   function handleSearch(name: string) {
@@ -112,12 +121,17 @@ export default function Home() {
       return;
     }
 
-    const fetchSearchData = async () => {
-      setLoading(true);
-      const data = await searchPokemon(name);
-
-      setPokemonData(data.Pokemon);
-      setLoading(false);
+  const fetchSearchData = async () => {
+    
+    setLoading(true);
+      try {
+        const data = await searchPokemon(name);
+        setPokemonData(data.Pokemon);
+      } catch (error) {
+        console.error("Error fetching Pokémon data:", error);
+      } finally {
+        setLoading(false);
+      }
     };
     fetchSearchData();
   }
