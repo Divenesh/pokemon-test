@@ -3,7 +3,7 @@
 
 
 ### Data Fetching
-Two data fetching endpoint has been developed. First is root (index) endpoint where it collects the data from external API and returns all the pokemon data based on the offset ( calculated based on page ) and specified limit ( constant 60, maxed at 100 ).
+Two data fetching endpoint has been developed. First is root (index) endpoint where it collects the data from external API and returns all the pokemon data based on the offset ( calculated based on page ) and specified limit ( constant 24, maxed at 100 ).
 The system first gets the name pokemon from the specified url below and the pokemon data will be fetch from the another url comes along with the name. The external API URL is
 
 https://pokeapi.co/api/v2/pokemon?offset={$offset}&limit={$limit}

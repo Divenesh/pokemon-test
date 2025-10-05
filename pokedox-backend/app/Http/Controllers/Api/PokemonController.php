@@ -51,9 +51,7 @@ class PokemonController extends Controller
                             'image' => $pokemonData['sprites']['front_default'],
                         ];
                     } else {
-                        // Fallback for failed requests
                         $pokemon[] = [
-                            'id' => $offset + $index + 1,
                             'name' => ucfirst($item['name']),
                             'height' => null,
                             'weight' => null,
@@ -62,7 +60,6 @@ class PokemonController extends Controller
                         ];
                     }
                 } catch (\Exception $e) {
-                    // Skip this Pokemon if request fails
                     continue;
                 }
             }
@@ -70,13 +67,6 @@ class PokemonController extends Controller
             return response()->json([
                 'success' => true,
                 'data' => $pokemon,
-                'total' => $data['count'],
-                'pagination' => [
-                    'current_page' => $page,
-                    'per_page' => $limit,
-                    'total' => $data['count'],
-                    'last_page' => ceil($data['count'] / $limit)
-                ]
             ]);
 
         } catch (\Exception $e) {
@@ -127,7 +117,6 @@ class PokemonController extends Controller
         ];
         return response()->json([
             'success' => true,
-            'query' => $query,
             'data' => $pokemon
         ]);
 

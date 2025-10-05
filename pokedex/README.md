@@ -19,11 +19,11 @@ We’ve implemented **two API functions** for fetching Pokémon data:
 
 ### 1️⃣ `fetchPokemonData()`
 
-* Purpose: Fetches Pokémon from the backend based on **page** and **limit** (constant = 60).
+* Purpose: Fetches Pokémon from the backend based on **page** and **limit** (constant = 24).
 * API URL:
 
   ```bash
-  http://localhost:8002/api/pokemon?page=${page}&limit=60
+  http://localhost:8002/api/pokemon?page=${page}&limit=24
   ```
 
 ### 2️⃣ `searchPokemon()`
