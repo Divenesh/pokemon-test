@@ -1,6 +1,4 @@
-# 🐉 Pokémon Test (Take Home Assessment)
-
-*By Involve Asia Technologies*
+# 🐉 Pokémon Test
 
 ---
 
